@@ -1,29 +1,30 @@
-interface BookDataSource {
-    fun fetchBooks(): List<String>
+enum class BookType {
+    FICTION,
+    TECHNICAL,
+    AUDIO
 }
 
-class LocalBookDataSource : BookDataSource {
-    override fun fetchBooks(): List<String> = listOf("Local: Kotlin in Action", "Local: Clean Architecture")
+interface Book{
+    val title: String
+    fun read()
 }
 
-class RemoteBookDataSource : BookDataSource {
-    override fun fetchBooks(): List<String> = listOf("Remote: Effective Kotlin", "Remote: Android Internals")
+class FictionBook(override val title: String) : Book {
+    override fun read() = println("Reading fiction book: $title")
 }
 
-abstract class BookLoader {
+class TechnicalBook(override val title: String) : Book {
+    override fun read() = println("Studying technical book: $title")
+}
 
-    abstract fun createDataSource(): BookDataSource
+class AudioBook(override val title: String) : Book {
+    override fun read() = println("Listening to audiobook: $title")
+}
 
-    fun loadBooks(): List<String> {
-        val dataSource = createDataSource()
-        return dataSource.fetchBooks().map { "[Loaded] $it" }
+fun bookFactory(type: BookType, title: String): Book {
+    return when (type) {
+        BookType.FICTION -> FictionBook(title)
+        BookType.TECHNICAL -> TechnicalBook(title)
+        BookType.AUDIO -> AudioBook(title)
     }
-}
-
-class LocalBookLoader : BookLoader() {
-    override fun createDataSource(): BookDataSource = LocalBookDataSource()
-}
-
-class RemoteBookLoader : BookLoader() {
-    override fun createDataSource(): BookDataSource = RemoteBookDataSource()
 }
