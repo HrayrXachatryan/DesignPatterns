@@ -24,18 +24,14 @@ fun main() {
         .build()
 
     // Abstract Factory
-    val classicGame = GameScreen(themeFactory = ClassicThemeFactory())
-    classicGame.draw() // ⬜ 🟩 🍎
+    val factory = gameThemeFactory(ThemeType.NEON)
+    val gameScreen = GameScreen(factory)
 
-    val neonGame = GameScreen(themeFactory = NeonThemeFactory())
-    neonGame.draw() // ⬛ 💚 💎
+    gameScreen.draw()
 
     // Factory Method
-    val localLoader: BookLoader = LocalBookLoader()
-    println(localLoader.loadBooks())
-
-    val remoteLoader: BookLoader = RemoteBookLoader()
-    println(remoteLoader.loadBooks())
+    val myBook = bookFactory(BookType.TECHNICAL, "Kotlin in Action")
+    myBook.read()
 
     // Strategy
     val calculator = DeliveryCalculator(strategy = StandardDelivery())
@@ -69,6 +65,15 @@ fun main() {
     character.health = 50
     println(character.health)
 
-    character.health = 150
-    println(character.health)
+//    character.health = 150
+//    println(character.health)
+
+    // Observer
+    val realMadridNews = NewsPublisher(Team.REAL_MADRID)
+    val poxos = Fan("Poxos")
+    val ani = Fan("Ani")
+
+    realMadridNews.subscribe(poxos)
+    realMadridNews.subscribe(ani)
+    realMadridNews.notify("New signing announced!")
 }

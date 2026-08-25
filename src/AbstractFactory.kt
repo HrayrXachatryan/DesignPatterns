@@ -52,8 +52,19 @@ class NeonThemeFactory : GameThemeFactory {
     override fun createBoardRenderer(): BoardRenderer = NeonBoardRenderer()
 }
 
-class GameScreen(private val themeFactory: GameThemeFactory) {
+enum class ThemeType {
+    CLASSIC,
+    NEON
+}
 
+fun gameThemeFactory(type: ThemeType): GameThemeFactory {
+    return when (type) {
+        ThemeType.CLASSIC -> ClassicThemeFactory()
+        ThemeType.NEON -> NeonThemeFactory()
+    }
+}
+
+class GameScreen(private val themeFactory: GameThemeFactory) {
     private val snakeRenderer = themeFactory.createSnakeRenderer()
     private val foodRenderer = themeFactory.createFoodRenderer()
     private val boardRenderer = themeFactory.createBoardRenderer()

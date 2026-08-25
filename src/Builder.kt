@@ -1,4 +1,4 @@
-class NetworkRequest private constructor(
+class NetworkRequest  constructor(
     val url: String,
     val method: String,
     val headers: Map<String, String>,
@@ -13,7 +13,11 @@ class NetworkRequest private constructor(
 
         fun method(method: String) = apply { this.method = method }
         fun addHeader(key: String, value: String) = apply { headers[key] = value }
-        fun body(body: String) = apply { this.body = body }
+        fun body(body: String): Builder {
+            this.body = body
+            return this
+        }
+//            apply { this.body = body }
         fun timeout(seconds: Int) = apply { timeoutSeconds = seconds }
 
         fun build(): NetworkRequest {
